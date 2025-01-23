@@ -1,48 +1,23 @@
-#ifndef CSP_TYPES_H_INCLUDED_
-#define CSP_TYPES_H_INCLUDED_ 1
+#ifndef CSPRITE_SRC_TYPES_H_INCLUDED_
+#define CSPRITE_SRC_TYPES_H_INCLUDED_
 #pragma once
 
-#define MIN(a, min) (a <= min ? min : a)
-#define MAX(a, max) (a >= max ? max : a)
-#define MIN_MAX(a, min, max) MAX(MIN(a, min), max)
+#include <stdint.h>
 
-#ifdef __cplusplus
-	#include <cstdint>
-	#include <string>
-	#include <vector>
+typedef struct {
+	int32_t x, y;
+} Vec2;
 
-	typedef std::string String;
+typedef struct {
+	Vec2 start, end;
+} Rect;
 
-	template<typename Type>
-	using Vector = std::vector<Type>;
-#else
-	#include <stdint.h>
+static inline void rect_invalidate(Rect* r) {
+	r->start.x = r->end.x = 0;
+}
+
+static inline int rect_is_valid(Rect* r) {
+	return r->start.x != r->end.x;
+}
+
 #endif
-
-typedef uint8_t u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
-
-typedef int8_t i8;
-typedef int16_t i16;
-typedef int32_t i32;
-
-typedef float f32;
-typedef double f64;
-
-typedef char* cString;
-
-#define VEC(type, name) struct name { type x, y; }
-#define RECT(type, name) struct name { type x, y, w, h; }
-#define RECT_MM(type, name) struct name { type min_x, min_y, max_x, max_y; }
-
-VEC(i32, VecI32);
-VEC(f32, VecF32);
-
-RECT(u32, RectU32);
-RECT(i32, RectI32);
-RECT(f32, RectF32);
-
-RECT_MM(u32, mm_RectU32);
-
-#endif // CSP_TYPES_H_INCLUDED_
